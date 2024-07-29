@@ -10,4 +10,4 @@
 2. npm i axios
 3. добавить поле в package.json - "type":"module"
 4. запустить коммандой - node parse.js
-5. сгенериться файлик - dml.sql
+5. сгенерится файлик - dml.sql
