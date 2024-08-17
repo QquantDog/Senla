@@ -12,8 +12,12 @@ import java.util.Optional;
 @Component
 public class UserServiceImpl implements UserService {
 
+    private UserDao userDao;
+
     @Autowire
-    UserDao userDao;
+    public UserServiceImpl(UserDao userDao){
+        this.userDao = userDao;
+    }
 
     @Override
     public List<User> getAllUsers() {

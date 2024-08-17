@@ -6,6 +6,7 @@ import com.senla.annotations.Value;
 import com.senla.exceptions.AmbiguityComponentException;
 import com.senla.exceptions.AmbiguityInterfaceException;
 import com.senla.exceptions.AutowireFailureException;
+import com.senla.postprocessor.ComponentPostProcessor;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
@@ -25,6 +26,11 @@ public class ApplicationContext {
     private final Map<Class<?>, Class<?>> interfToImplMap = new ConcurrentHashMap<>();
     private final Set<Class<?>> isTryingToCycleAutowire = new HashSet<>();
     private final Properties props = new Properties();
+
+//    private final List<Method> beforeInit = new ArrayList<>();
+//    private final List<Method> afterInit = new ArrayList<>();
+    private final List<Object> chain = new ArrayList<>();
+    private final Set<Class<?>> componentPostProcessorsClasses = new HashSet<>();
 
     private String packageToScan;
     private Reflections reflections;
@@ -51,15 +57,59 @@ public class ApplicationContext {
     @SneakyThrows
     private void initComponentsMap() {
         Set<Class<?>> set = reflections.get(SubTypes.of(TypesAnnotated.with(Component.class)).asClass());
-        set.forEach(this::addInterfaceReference);
+        set.forEach(this::postProcessRegistration);
+        set.removeAll(componentPostProcessorsClasses);
+
+        set.forEach(this::preInstantation);
         set.forEach(this::instantiateComponent);
         set.forEach(this::initializeComponent);
+        set.forEach(this::postProcessBefore);
+        set.forEach(this::postProcessAfter);
         debugComponentsMap();
     }
-    private void addInterfaceReference(Class<?> cmpClass){
+
+    @SneakyThrows
+    private void postProcessRegistration(Class<?> cmpClass){
+        Class<?>[] interface_arr = cmpClass.getInterfaces();
+        if (interface_arr.length == 1){
+            Class<?> interfaceClass = interface_arr[0];
+            if(interfaceClass.equals(ComponentPostProcessor.class)){
+                try{
+                    chain.add(cmpClass.getDeclaredConstructor().newInstance());
+                    componentPostProcessorsClasses.add(cmpClass);
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                         IllegalAccessException e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    @SneakyThrows
+    private void postProcessBefore(Class<?> cmpClass){
+        Object cmp = implToComponentMap.get(cmpClass);
+        for(Object postProcessor: chain){
+            Method beforeInitMethod = postProcessor.getClass().getMethod("postProcessBeforeInitialization", Object.class, Class.class);
+            Object[] arr = new Object[]{cmp, cmpClass};
+            beforeInitMethod.invoke(postProcessor, Arrays.stream(arr).toArray());
+        }
+    }
+    @SneakyThrows
+    private void postProcessAfter(Class<?> cmpClass){
+        Object cmp = implToComponentMap.get(cmpClass);
+        for(Object postProcessor: chain){
+            Method afterInitMethod = postProcessor.getClass().getMethod("postProcessAfterInitialization", Object.class, Class.class);
+            Object[] arr = new Object[]{cmp, cmpClass};
+            afterInitMethod.invoke(postProcessor, Arrays.stream(arr).toArray());
+        }
+    }
+
+
+    private void preInstantation(Class<?> cmpClass){
         Class<?>[] interface_arr = cmpClass.getInterfaces();
         if (interface_arr.length > 1) throw new RuntimeException("More than 1 interface");
         else if (interface_arr.length == 1) {
+            Class<?> interfaceClass = interface_arr[0];
             if(interfToImplMap.get(interface_arr[0]) != null) throw new AmbiguityInterfaceException("More than one component per interface");
             interfToImplMap.put(interface_arr[0], cmpClass);
         }
