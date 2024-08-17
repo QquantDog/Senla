@@ -7,13 +7,13 @@ import com.senla.postprocessor.ComponentPostProcessor;
 public class CustomPostProcessor implements ComponentPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object component, Class<?> beanImpl) {
-        System.out.println("Before init 1111");
+        System.out.println("Before init 1331");
         return null;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object component, Class<?> beanImpl) {
-        System.out.println("After init 2222");
+        System.out.println("After init 2442");
         return null;
     }
 }

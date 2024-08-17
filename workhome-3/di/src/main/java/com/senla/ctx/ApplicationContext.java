@@ -17,18 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.reflections.scanners.Scanners.*;
 
 public class ApplicationContext {
-//  связь строго 1 - к - 1 иначе
-//  throw new AmbiguityComponentNameException в процессе сканирования
+
     private final Map<Class<?>, Object> implToComponentMap = new ConcurrentHashMap<>();
 
-//    Class<?> (интерфейсная переменная) -> Class<?> (класс имплементации) -> Оbject (сам компонент)
-//    Impl - конечный класс имплементации
+
     private final Map<Class<?>, Class<?>> interfToImplMap = new ConcurrentHashMap<>();
     private final Set<Class<?>> isTryingToCycleAutowire = new HashSet<>();
     private final Properties props = new Properties();
 
-//    private final List<Method> beforeInit = new ArrayList<>();
-//    private final List<Method> afterInit = new ArrayList<>();
     private final List<Object> chain = new ArrayList<>();
     private final Set<Class<?>> componentPostProcessorsClasses = new HashSet<>();
 
@@ -130,7 +126,6 @@ public class ApplicationContext {
                 }
             }
             if (autowireConstructorsCounter > 1) throw new RuntimeException("More than 1 autowire ctors");
-//
             else if (autowireConstructorsCounter == 1) {
 
                 if(isTryingToCycleAutowire.contains(cmpClass)) throw new AutowireFailureException("Constructor autowire cycle found - change dependency tree");
@@ -147,7 +142,6 @@ public class ApplicationContext {
                         impl = interfToImplMap.get(dependencyType);
 
                     }
-//                  если dependency отсутствует, то пытаемся ее инстанцировать
                     if(implToComponentMap.get(impl) == null){
                         Object paramRealisation = instantiateComponent(impl);
                         comp_arr.add(paramRealisation);
@@ -178,23 +172,6 @@ public class ApplicationContext {
         }
     }
 
-        //todo
-//1 поменять beanName STring на Class
-//2 заполнить интерфейсы сразу
-//3 PostProcessor - интерфейс PostProcess(Object bean) - дефолтные Autowired, Value - дефолтные постпроцессоры
-//4 A implements PostProcessor
-
-//                нахождение всех постпроцессоров
-//                инстанцирование бинов(2 мап) + рекурсивное инстанцирование Autowired
-//                        A -> B -> C -> A
-//                прогнать по цепочке ответсвенности
-//                        Value с проперти файла
-
-//                у меня заполнены 2 мапы
-//                cmpClass.getInterfaces();
-//        debugComponentsMap();
-//        instantiateComponentsMap(set);
-//    @SneakyThrows
     private void initializeComponent(Class<?> cmpClass){
         Field[] fields = cmpClass.getDeclaredFields();
         for (Field field: fields){
@@ -215,13 +192,11 @@ public class ApplicationContext {
                     throw new RuntimeException(e);
                 }
             }
-//            взаимисключающе или @Autowire или @Value
             else if(field.isAnnotationPresent(Value.class)){
                 String prop_value = props.getProperty(field.getAnnotation(Value.class).value());
                 if(prop_value == null) throw new RuntimeException("Value couldn't be found in props file");
                 field.setAccessible(true);
-//                по-хорошему добваить исключения для невозможности каста
-//                например из Строки в Инт
+
                 try{
                     field.set(implToComponentMap.get(cmpClass), prop_value);
                 }catch (Throwable e){
