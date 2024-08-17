@@ -1,0 +1,21 @@
+create index users_role_id_idx on public.users using btree(role_id);
+create index streets_city_id_idx on public.streets using btree(city_id);
+create index addresses_streets_id_idx on public.addresses using btree(street_id);
+create index drivers_active_city_id_idx on public.drivers using btree(active_city_id);
+create index customers_home_address_id_idx on public.customers using btree(home_address_id);
+create index cards_customer_id_idx on public.cards using btree(customer_id);
+create index vehicles_brand_id_idx on public.vehicles using btree(brand_id);
+create index cabs_city_id_idx on public.cabs using btree(city_id);
+create index shifts_cab_id_idx on public.shifts using btree(cab_id);
+create index shifts_driver_id_idx on public.shifts using btree(cab_id);
+create index rides_shift_id_idx on public.rides using btree(ride_id);
+create index rides_customer_id_idx on public.rides using btree(customer_id);
+create index rides_promocode_id_idx on public.rides using btree(promocode_id);
+
+create index phone_number_idx on public.users using hash (phone_number);
+create index city_name_idx on public.cities using btree (city_name);
+create index street_name_idx on public.streets using btree (street_name);
+create index addresses_name_idx on public.addresses using hash (name);
+create index card_holder_idx on public.cards using hash (card_holder_name);
+create index rides_data_idx on public.rides using btree (ride_distance_meters);
+create index customer_rating_idx on public.customer_ratings using btree (rating);
