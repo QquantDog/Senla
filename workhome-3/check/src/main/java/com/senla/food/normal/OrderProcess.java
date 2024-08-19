@@ -9,7 +9,7 @@ public class OrderProcess {
     public static void main(String[] args) {
         var ctx = new ApplicationContext("com.senla.food.normal");
         ctx.init();
-        OrderPreparation bean = (OrderPreparation) ctx.getBean(OrderPreparation.class);
+        OrderPreparation bean = (OrderPreparation) ctx.getComponent(OrderPreparation.class);
         bean.debug();
     }
 }

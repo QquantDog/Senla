@@ -18,10 +18,10 @@ import static org.reflections.scanners.Scanners.*;
 
 public class ApplicationContext {
 
-    private final Map<Class<?>, Object> implToComponentMap = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Object> implToComponentMap = new HashMap<>();
 
 
-    private final Map<Class<?>, Class<?>> interfToImplMap = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Class<?>> interfToImplMap = new HashMap<>();
     private final Set<Class<?>> isTryingToCycleAutowire = new HashSet<>();
     private final Properties props = new Properties();
 
@@ -106,22 +106,28 @@ public class ApplicationContext {
         if (interface_arr.length > 1) throw new RuntimeException("More than 1 interface");
         else if (interface_arr.length == 1) {
             Class<?> interfaceClass = interface_arr[0];
-            if(interfToImplMap.get(interface_arr[0]) != null) throw new AmbiguityInterfaceException("More than one component per interface");
-            interfToImplMap.put(interface_arr[0], cmpClass);
+            if(interfToImplMap.get(interfaceClass) != null) throw new AmbiguityInterfaceException("More than one component per interface");
+            interfToImplMap.put(interfaceClass, cmpClass);
         }
     }
     private Object instantiateComponent(Class<?> cmpClass){
         if(!cmpClass.isAnnotationPresent(Component.class)) throw new RuntimeException("Trying to instantiate NOT a component");
         if(implToComponentMap.get(cmpClass) != null) return implToComponentMap.get(cmpClass);
         try {
-            Constructor<?>[] ctor_arr = cmpClass.getDeclaredConstructors();
+            Constructor<?>[] constructors = cmpClass.getDeclaredConstructors();
+
+// autowire FoodService()
+
+//  FoodService(Impl impl)
+// stream - почитать
+
 
             int autowireConstructorsCounter = 0;
             Constructor<?> lastAnnotatedConstructor = null;
 
-            for (Constructor<?> ctor : ctor_arr) {
-                if (ctor.isAnnotationPresent(Autowire.class)) {
-                    lastAnnotatedConstructor = ctor;
+            for (Constructor<?> constructor : constructors) {
+                if (constructor.isAnnotationPresent(Autowire.class)) {
+                    lastAnnotatedConstructor = constructor;
                     autowireConstructorsCounter++;
                 }
             }
@@ -140,7 +146,6 @@ public class ApplicationContext {
                     Class<?> impl = dependencyType;
                     if(dependencyType.isInterface()){
                         impl = interfToImplMap.get(dependencyType);
-
                     }
                     if(implToComponentMap.get(impl) == null){
                         Object paramRealisation = instantiateComponent(impl);
@@ -157,15 +162,13 @@ public class ApplicationContext {
                 return cmp;
             }
 //
-            else if (autowireConstructorsCounter == 0) {
+            else{
                 Constructor<?> defaultConstructor = cmpClass.getDeclaredConstructor();
                 defaultConstructor.setAccessible(true);
                 Object cmp = defaultConstructor.newInstance();
                 if(implToComponentMap.get(cmpClass) != null) throw new AmbiguityComponentException("More than 1 component implementation");
                 implToComponentMap.put(cmpClass, cmp);
                 return cmp;
-            } else {
-                throw new RuntimeException("Unreachable code");
             }
         } catch (Throwable e) {
             throw new RuntimeException(e);
@@ -235,7 +238,7 @@ public class ApplicationContext {
 
     public void debugComponentsMap(){
         implToComponentMap.forEach((name, obj) -> {
-            System.out.println("beanName: " + name);
+            System.out.println("cmpName: " + name);
             System.out.println("obj class: " + obj.getClass().getName());
             System.out.println("------------------");
         });
@@ -248,7 +251,7 @@ public class ApplicationContext {
         });
     }
 
-    public Object getBean(Class<?> cmpClass){
+    public Object getComponent(Class<?> cmpClass){
         return implToComponentMap.get(cmpClass);
     }
 
