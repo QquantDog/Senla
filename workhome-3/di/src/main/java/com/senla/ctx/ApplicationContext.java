@@ -12,14 +12,12 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.reflections.scanners.Scanners.*;
 
 public class ApplicationContext {
 
     private final Map<Class<?>, Object> implToComponentMap = new HashMap<>();
-
 
     private final Map<Class<?>, Class<?>> interfToImplMap = new HashMap<>();
     private final Set<Class<?>> isTryingToCycleAutowire = new HashSet<>();
