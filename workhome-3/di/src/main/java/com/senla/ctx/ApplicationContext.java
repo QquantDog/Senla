@@ -24,7 +24,6 @@ public class ApplicationContext {
     private final Set<Class<?>> isTryingToCycleAutowire = new HashSet<>();
     private final Properties props = new Properties();
 
-//    private final List<ComponentPostProcessor> postProcessorChain = new ArrayList<>();
     private final PostProcessModule postProcessModule;
 
     private final String packageToScan;
@@ -36,18 +35,10 @@ public class ApplicationContext {
         this.postProcessModule = new PostProcessModule(this, packageToScan);
     }
 
-//    autowired и value - в постпроцессоры
-//    логика процессоры
-//    void postProcess(bean, Class bean)
-
-//    void postProcess(List<Object> beanList)
-//     List(autowire, value)
-
     public void init(){
         loadProps();
         postProcessModule.scanDefault();
         postProcessModule.scanPackage(packageToScan);
-//        postProcessModule.showList();
         initComponentsMap();
     }
 
@@ -62,44 +53,14 @@ public class ApplicationContext {
     private void initComponentsMap() {
         Set<Class<?>> set = reflections.get(SubTypes.of(TypesAnnotated.with(Component.class)).asClass());
 
-//        scanPostProcessors();
-
         set.forEach(this::preInstantation);
         set.forEach(this::instantiateComponent);
         postProcessModule.postProcessBefore(set);
         set.forEach(this::postConstruct);
         postProcessModule.postProcessAfter(set);
         debugComponentsMap();
-//
-//        POstPRocessors - here
-//        исключчаем только автовайред конструкторы
-//
-//        Set<Class<?>>
 
-//        set.forEach(this::injectDependencyInComponent);
-//        set.forEach(this::postProcessBefore);
-//        set.forEach(this::postConstruct);
-//        set.forEach(this::postProcessAfter);
     }
-//    private void scanPostProcessors(){
-//        Set<Class<?>> set = reflections.get(SubTypes.of(ComponentPostProcessor.class).asClass());
-//        set.forEach(this::postProcessRegistration);
-//    }
-//
-//    private void postProcessRegistration(Class<?> cmpClass){
-//        Class<?>[] interface_arr = cmpClass.getInterfaces();
-//        if (interface_arr.length == 1){
-//            Class<?> interfaceClass = interface_arr[0];
-//            if(interfaceClass.equals(ComponentPostProcessor.class)){
-//                try{
-//                    postProcessorChain.add((ComponentPostProcessor) cmpClass.getDeclaredConstructor().newInstance());
-//                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-//                         IllegalAccessException e){
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        }
-//    }
 
     private void preInstantation(Class<?> cmpClass){
         Class<?>[] interface_arr = cmpClass.getInterfaces();
@@ -169,20 +130,6 @@ public class ApplicationContext {
         }
     }
 
-//    private void injectDependencyInComponent(Class<?> cmpClass){
-//
-//    }
-
-//    private void postProcessBefore(Class<?> cmpClass){
-//        Object cmp = implToComponentMap.get(cmpClass);
-//        postProcessorChain.forEach(postProcessor -> {
-//            try{
-//                postProcessor.postProcessBeforeInitialization(cmp, cmpClass);
-//            } catch (Throwable e){
-//                throw new RuntimeException(e);
-//            }
-//        });
-//    }
     private void postConstruct(Class<?> cmpClass){
         Object cmp = implToComponentMap.get(cmpClass);
         Method[] methods = cmpClass.getDeclaredMethods();
@@ -202,22 +149,10 @@ public class ApplicationContext {
         });
     }
 
-//    private void postProcessAfter(Class<?> cmpClass){
-//        Object cmp = implToComponentMap.get(cmpClass);
-//        postProcessorChain.forEach(postProcessor -> {
-//            try{
-//                postProcessor.postProcessAfterInitialization(cmp, cmpClass);
-//            } catch (Throwable e){
-//                throw new RuntimeException(e);
-//            }
-//        });
-//    }
-
     public void debugComponentsMap(){
         System.out.println("Start of component list: ");
         implToComponentMap.forEach((name, obj) -> {
             System.out.println("    component_class: " + name);
-//            System.out.println("obj class: " + obj);
             System.out.println("    ------------------");
         });
         System.out.println("End of component list");
@@ -245,5 +180,4 @@ public class ApplicationContext {
     public String getPropertyByKey(String key){
         return props.getProperty(key);
     }
-//    public void setImplementation()
 }

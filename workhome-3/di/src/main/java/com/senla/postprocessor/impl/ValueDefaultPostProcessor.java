@@ -20,7 +20,9 @@ public class ValueDefaultPostProcessor implements ComponentPostProcessor {
         Field[] fields = cmpClass.getDeclaredFields();
         Arrays.stream(fields).filter(field -> field.isAnnotationPresent(Value.class)).forEach(field -> {
             String propValue = ctx.getPropertyByKey(field.getAnnotation(Value.class).value());
+
             if(propValue == null) throw new RuntimeException("Value couldn't be found in props file");
+
             field.setAccessible(true);
             try{
                 field.set(component, propValue);
