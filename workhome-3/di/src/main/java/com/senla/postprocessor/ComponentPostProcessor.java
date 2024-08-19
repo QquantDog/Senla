@@ -1,6 +1,6 @@
 package com.senla.postprocessor;
 
 public interface ComponentPostProcessor {
-    public Object postProcessBeforeInitialization(Object component, Class<?> cmpImpl);
-    public Object postProcessAfterInitialization(Object component, Class<?> cmpImpl);
+    public void postProcessBeforeInitialization(Object component, Class<?> cmpImpl);
+    public default void postProcessAfterInitialization(Object component, Class<?> cmpImpl){};
 }

@@ -2,7 +2,6 @@ package com.senla.food.normal;
 
 
 import com.senla.ctx.ApplicationContext;
-import com.senla.food.graphservices.arc.ArcCheck;
 import com.senla.food.normal.process.OrderPreparation;
 
 public class OrderProcess {

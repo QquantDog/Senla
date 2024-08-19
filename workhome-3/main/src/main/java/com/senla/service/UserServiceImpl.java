@@ -8,7 +8,6 @@ import com.senla.dao.UserDao;
 import com.senla.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class UserServiceImpl implements UserService {
