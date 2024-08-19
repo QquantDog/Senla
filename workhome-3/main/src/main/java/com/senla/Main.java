@@ -8,7 +8,7 @@ public class Main {
 
         var ctx = new ApplicationContext("com.senla");
         ctx.init();
-        UserController c = (UserController) ctx.getComponent(UserController.class);
-        c.execute();
+        UserController controller = (UserController) ctx.getComponent(UserController.class);
+        controller.execute();
     }
 }

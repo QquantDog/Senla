@@ -3,6 +3,7 @@ package com.senla.food.normal.process;
 import com.senla.annotations.Autowire;
 //import com.senla.annotations.Value;
 import com.senla.annotations.Component;
+import com.senla.annotations.PostConstruct;
 import com.senla.annotations.Value;
 import com.senla.food.normal.services.AddressService;
 import com.senla.food.normal.services.CourierService;
@@ -25,6 +26,11 @@ public class OrderPreparation {
 
     @Value("db.password")
     private String password;
+
+    @PostConstruct
+    public void someInfo(){
+        System.out.println("postConstruct called - after beforePostProcessInit and before afterPostProcessInit ");
+    }
 
     @Autowire
     public void setOutFields(AddressService addressService, CheapPriceServiceImpl priceService){
