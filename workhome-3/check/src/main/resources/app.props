@@ -1,0 +1,2 @@
+property1=value_from_props_file
+db.password=password_fetched_from_props_file
