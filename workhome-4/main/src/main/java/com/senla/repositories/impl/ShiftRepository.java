@@ -1,18 +1,16 @@
 package com.senla.repositories.impl;
 
-import com.senla.models.city.City;
 import com.senla.models.shift.Shift;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ShiftRepository extends AbstractRepository<Shift, Long> {
+public class ShiftRepository extends LongIdRepository<Shift> {
     @PostConstruct
     void init(){
         List<Shift> shifts = new ArrayList<>();
@@ -39,8 +37,4 @@ public class ShiftRepository extends AbstractRepository<Shift, Long> {
     @Override
     protected void postUpdateProcessEntity(Shift entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

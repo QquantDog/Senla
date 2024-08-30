@@ -1,8 +1,7 @@
 package com.senla.repositories.impl;
 
-import com.senla.models.city.City;
 import com.senla.models.customer.Customer;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomerRepository extends AbstractRepository<Customer, Long> {
+public class CustomerRepository extends LongIdRepository<Customer> {
     @PostConstruct
     void init(){
         List<Customer> customers = new ArrayList<>();
@@ -37,8 +36,4 @@ public class CustomerRepository extends AbstractRepository<Customer, Long> {
     @Override
     protected void postUpdateProcessEntity(Customer entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

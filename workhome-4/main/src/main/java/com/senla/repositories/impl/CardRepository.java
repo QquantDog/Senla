@@ -1,18 +1,16 @@
 package com.senla.repositories.impl;
 
 import com.senla.models.card.Card;
-import com.senla.models.cityrate.CityRate;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CardRepository extends AbstractRepository<Card, Long> {
+public class CardRepository extends LongIdRepository<Card> {
     @PostConstruct
     void init(){
         List<Card> cards = new ArrayList<>();
@@ -37,8 +35,4 @@ public class CardRepository extends AbstractRepository<Card, Long> {
     @Override
     protected void postUpdateProcessEntity(Card entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

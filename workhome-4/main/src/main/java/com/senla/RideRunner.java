@@ -3,9 +3,7 @@ package com.senla;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.senla.config.SpringConfig;
 import com.senla.controllers.RideController;
-import com.senla.models.ride.Ride;
-import com.senla.models.ride.RideCreateDto;
-import org.springframework.cglib.core.Local;
+import com.senla.dto.ride.RideCreateDto;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.math.BigDecimal;

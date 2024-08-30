@@ -1,8 +1,7 @@
 package com.senla.repositories.impl;
 
-import com.senla.models.city.City;
 import com.senla.models.promocode.Promocode;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PromocodeRepository extends AbstractRepository<Promocode, Long> {
+public class PromocodeRepository extends LongIdRepository<Promocode> {
     @PostConstruct
     void init(){
         List<Promocode> promocodes = new ArrayList<>();
@@ -32,8 +31,4 @@ public class PromocodeRepository extends AbstractRepository<Promocode, Long> {
     @Override
     protected void postUpdateProcessEntity(Promocode entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

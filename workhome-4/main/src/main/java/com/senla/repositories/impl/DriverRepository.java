@@ -1,8 +1,7 @@
 package com.senla.repositories.impl;
 
-import com.senla.models.city.City;
 import com.senla.models.driver.Driver;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class DriverRepository extends AbstractRepository<Driver, Long> {
+public class DriverRepository extends LongIdRepository<Driver> {
     @PostConstruct
     void init(){
         List<Driver> drivers = new ArrayList<>();
@@ -38,8 +37,4 @@ public class DriverRepository extends AbstractRepository<Driver, Long> {
     @Override
     protected void postUpdateProcessEntity(Driver entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

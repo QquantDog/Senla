@@ -1,6 +1,6 @@
 package com.senla.models.address;
 
-import com.senla.repositories.Identifiable;
+import com.senla.util.repository.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

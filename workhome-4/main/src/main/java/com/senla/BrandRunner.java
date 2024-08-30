@@ -3,8 +3,8 @@ package com.senla;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.senla.config.SpringConfig;
 import com.senla.controllers.VehicleBrandController;
-import com.senla.models.vehiclebrand.VehicleBrandCreateDto;
-import com.senla.models.vehiclebrand.VehicleBrandUpdateDto;
+import com.senla.dto.vehiclebrand.VehicleBrandCreateDto;
+import com.senla.dto.vehiclebrand.VehicleBrandUpdateDto;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class BrandRunner {

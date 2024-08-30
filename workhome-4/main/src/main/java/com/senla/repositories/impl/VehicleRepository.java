@@ -2,7 +2,7 @@ package com.senla.repositories.impl;
 
 
 import com.senla.models.vehicle.Vehicle;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class VehicleRepository extends AbstractRepository<Vehicle, Long> {
+public class VehicleRepository extends LongIdRepository<Vehicle> {
     @PostConstruct
     void init(){
         List<Vehicle> vehicles = new ArrayList<>();
@@ -36,8 +36,4 @@ public class VehicleRepository extends AbstractRepository<Vehicle, Long> {
     @Override
     protected void postUpdateProcessEntity(Vehicle entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

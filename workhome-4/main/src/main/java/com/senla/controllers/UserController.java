@@ -2,10 +2,10 @@ package com.senla.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.senla.models.user.UserCreateDto;
+import com.senla.dto.user.UserCreateDto;
 import com.senla.models.user.User;
-import com.senla.models.user.UserResponseDto;
-import com.senla.models.user.UserUpdateDto;
+import com.senla.dto.user.UserResponseDto;
+import com.senla.dto.user.UserUpdateDto;
 import com.senla.services.impl.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,8 +3,8 @@ package com.senla;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.senla.config.SpringConfig;
 import com.senla.controllers.UserController;
-import com.senla.models.user.UserCreateDto;
-import com.senla.models.user.UserUpdateDto;
+import com.senla.dto.user.UserCreateDto;
+import com.senla.dto.user.UserUpdateDto;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDate;

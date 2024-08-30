@@ -1,12 +1,10 @@
 package com.senla.models.street;
 
-import com.senla.repositories.Identifiable;
+import com.senla.util.repository.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor

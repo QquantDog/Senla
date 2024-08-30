@@ -1,19 +1,17 @@
 package com.senla.repositories.impl;
 
-import com.senla.models.city.City;
 import com.senla.models.customerrating.CustomerRating;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomerRatingRepository extends AbstractRepository<CustomerRating, Long> {
+public class CustomerRatingRepository extends LongIdRepository<CustomerRating> {
     @PostConstruct
     void init(){
         List<CustomerRating> ratings = new ArrayList<>();
@@ -38,8 +36,4 @@ public class CustomerRatingRepository extends AbstractRepository<CustomerRating,
     @Override
     protected void postUpdateProcessEntity(CustomerRating entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

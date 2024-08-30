@@ -1,7 +1,7 @@
 package com.senla.repositories.impl;
 
 import com.senla.models.cab.Cab;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CabRepository extends AbstractRepository<Cab, Long> {
+public class CabRepository extends LongIdRepository<Cab> {
     @PostConstruct
     void init(){
         List<Cab> cabs = new ArrayList<>();
@@ -32,8 +32,4 @@ public class CabRepository extends AbstractRepository<Cab, Long> {
     @Override
     protected void postUpdateProcessEntity(Cab entity) {}
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
 }

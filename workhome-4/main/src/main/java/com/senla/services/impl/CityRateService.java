@@ -2,8 +2,7 @@ package com.senla.services.impl;
 
 import com.senla.models.cityrate.CityRate;
 import com.senla.repositories.impl.CityRateRepository;
-import com.senla.repositories.impl.CityRepository;
-import com.senla.services.AbstractLongIdGenericService;
+import com.senla.util.service.AbstractLongIdGenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

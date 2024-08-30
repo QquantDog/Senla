@@ -1,7 +1,7 @@
 package com.senla.repositories.impl;
 
 import com.senla.models.user.User;
-import com.senla.repositories.AbstractRepository;
+import com.senla.util.repository.LongIdRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class UserRepository extends AbstractRepository<User, Long> {
+public class UserRepository extends LongIdRepository<User> {
     @PostConstruct
     void init(){
         List<User> users = new ArrayList<>();
@@ -57,12 +57,7 @@ public class UserRepository extends AbstractRepository<User, Long> {
         hashPassword(entity);
     }
 
-    @Override
-    protected Long idGenNext() {
-        return super.currentId++;
-    }
     private void hashPassword(User entity) {
         entity.setPassword(entity.getPassword() + "_HASHED_THROUGH_POSTSAVE_IMPL");
     }
-
 }
