@@ -6,7 +6,7 @@ import com.senla.models.ride.Ride;
 import com.senla.dto.ride.RideCreateDto;
 import com.senla.dto.ride.RideResponseDto;
 import com.senla.dto.ride.RideUpdateDto;
-import com.senla.services.impl.RideService;
+import com.senla.services.RideService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

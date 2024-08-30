@@ -6,7 +6,7 @@ import com.senla.dto.user.UserCreateDto;
 import com.senla.models.user.User;
 import com.senla.dto.user.UserResponseDto;
 import com.senla.dto.user.UserUpdateDto;
-import com.senla.services.impl.UserService;
+import com.senla.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-//@RequestPathStub("/users")
 public class UserController {
 
     private final UserService userService;
@@ -31,48 +30,29 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-//    Get - /
     public String getAllUsers() throws JsonProcessingException {
-        Collection<User> users = this.userService.getAllUsers();
+        Collection<User> users = this.userService.findAll();
         return buildUserResponse(
                 users.stream()
                         .map(this::convertToResponseDto)
                         .collect(Collectors.toList()));
     }
 
-//    Get /:id
     public String getUserById(Long id) throws JsonProcessingException {
-        Optional<User> user = this.userService.getUserById(id);
+        Optional<User> user = this.userService.findById(id);
         if(user.isPresent()){
             return buildUserResponse(convertToResponseDto(user.get()));
         } else{
             return "No user found";
         }
     }
-//    POST /
     public String createUser(UserCreateDto userCreateDto) throws JsonProcessingException {
         User user = this.modelMapper.map(userCreateDto, User.class);
-        return buildUserResponse(convertToResponseDto(userService.createUser(user)));
+        return buildUserResponse(convertToResponseDto(userService.save(user)));
     }
-//    PUT /:id
     public String updateUser(UserUpdateDto userUpdateDto) throws JsonProcessingException {
         User user = this.modelMapper.map(userUpdateDto, User.class);
-        return buildUserResponse(convertToResponseDto(userService.updateUser(user)));
-    }
-
-    public String debugGetAllUsers() throws JsonProcessingException {
-        Collection<User> users = this.userService.getAllUsers();
-        return debugUserResponse(users);
-    }
-
-    public String debugCreateUser(UserCreateDto userCreateDto) throws JsonProcessingException {
-        User user = this.modelMapper.map(userCreateDto, User.class);
-        return debugUserResponse(userService.createUser(user));
-    }
-
-    public String debugUpdateUser(UserUpdateDto userUpdateDto) throws JsonProcessingException {
-        User user = this.modelMapper.map(userUpdateDto, User.class);
-        return debugUserResponse(userService.updateUser(user));
+        return buildUserResponse(convertToResponseDto(userService.save(user)));
     }
 
     public void deleteUser(Long id) {
@@ -83,7 +63,6 @@ public class UserController {
         System.out.println("Does exist user with ID: " + id +  " " +userService.existsById(id));
     }
 
-
     private UserResponseDto convertToResponseDto(User user){
         return modelMapper.map(user, UserResponseDto.class);
     }
@@ -93,13 +72,6 @@ public class UserController {
     }
     private String buildUserResponse(UserResponseDto usersResponseDto) throws JsonProcessingException {
         return jsonMapper.writeValueAsString(usersResponseDto);
-    }
-
-    private String debugUserResponse(User user) throws JsonProcessingException {
-        return jsonMapper.writeValueAsString(user);
-    }
-    private String debugUserResponse(Collection<User> user) throws JsonProcessingException {
-        return jsonMapper.writeValueAsString(user);
     }
 
 }

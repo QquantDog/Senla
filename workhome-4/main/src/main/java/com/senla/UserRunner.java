@@ -15,7 +15,6 @@ public class UserRunner {
     public static void main(String[] args) throws JsonProcessingException {
         var ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
         UserController c = ctx.getBean(UserController.class);
-//        testRead(c);
         testInsert(c);
         testUpdate(c);
         testDeleteAndRead(c);
@@ -53,13 +52,11 @@ public class UserRunner {
                     .build();
         System.out.println("User To Update: " + userToUpdate.toString());
         System.out.println(c.updateUser(userToUpdate));
-
-        System.out.println(c.debugGetAllUsers());
     }
     private static void testDeleteAndRead(UserController c) throws JsonProcessingException {
         c.existsUser(1L);
         c.deleteUser(1L);
         c.existsUser(1L);
-        System.out.println("Users after delete: " + c.debugGetAllUsers());
+        System.out.println("Users after delete: " + c.getAllUsers());
     }
 }

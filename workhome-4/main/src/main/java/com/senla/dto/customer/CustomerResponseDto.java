@@ -13,6 +13,5 @@ public class CustomerResponseDto {
     private String currentLat;
     private String currentLong;
 
-    private Long userId;
     private Long addressId;
 }

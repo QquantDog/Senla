@@ -6,7 +6,7 @@ import com.senla.models.vehiclebrand.VehicleBrand;
 import com.senla.dto.vehiclebrand.VehicleBrandCreateDto;
 import com.senla.dto.vehiclebrand.VehicleBrandResponseDto;
 import com.senla.dto.vehiclebrand.VehicleBrandUpdateDto;
-import com.senla.services.impl.VehicleBrandService;
+import com.senla.services.VehicleBrandService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

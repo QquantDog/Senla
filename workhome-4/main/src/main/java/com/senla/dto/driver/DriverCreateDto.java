@@ -15,7 +15,5 @@ public class DriverCreateDto {
     private String currentLat;
     private String currentLong;
 
-    //    1->1
-    private Long userId;
     private Long cityId;
 }

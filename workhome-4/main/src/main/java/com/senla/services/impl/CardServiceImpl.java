@@ -2,14 +2,15 @@ package com.senla.services.impl;
 
 import com.senla.models.card.Card;
 import com.senla.repositories.impl.CardRepository;
+import com.senla.services.CardService;
 import com.senla.util.service.AbstractLongIdGenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardService extends AbstractLongIdGenericService<Card> {
+public class CardServiceImpl extends AbstractLongIdGenericService<Card> implements CardService {
     @Autowired
-    public CardService(CardRepository cardRepository) {
+    public CardServiceImpl(CardRepository cardRepository) {
         this.abstractRepository = cardRepository;
     }
 }
