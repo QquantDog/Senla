@@ -1,0 +1,15 @@
+1 postfix entity убрать
+2 localdatetime() vs timestamp
+3. сделать плоские объекты(entity)
+4. приходит json на ендпоинт контроллера - преобрахуется в dto(какой-то из на апдейт)
+    в сервисе(оидн из вариантов) преобразуется в ентити и дальше обновляетсян
+
+5a. record на dto
+5. Dto на view - сериалихоываются в json
+    create/update - десериализова
+
+6. identefiable - interafece
+    Entity realises identifiable<ID>
+7. реализовать абстрактный репо
+
+8. про стирание типов - и выведение типа генерика
