@@ -1,0 +1,70 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+
+    <changeSet id="create-domains" author="Max Orlov">
+<!--        <preConditions onFail="MARK_RAN"/>-->
+        <sqlFile encoding="utf8" path="sql/01.bulk-create-domains.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-privileges" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/02.create-table-privileges.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-roles.sql" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/03.1.create-table-roles.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-roles_privileges" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/03.2.create-table-roles_privileges.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-users" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/04.create-table-users.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-cities" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/05.create-table-cities.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-city_rates" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/06.create-table-city_rates.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-streets" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/07.create-table-streets.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-addresses" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/09.create-table-addresses.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-drivers" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/10.create-table-drivers.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-customers" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/11.create-table-customers.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-cards" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/12.create-table-cards.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-vehicle_brands" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/13.1.create-table-vehicle_brands.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-vehicles" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/13.2.create-table-vehicles.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-cabs" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/14.create-table-cabs.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-shifts" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/15.create-table-shifts.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-promocodes" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/16.create-table-promocodes.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-rides" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/17.create-table-rides.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-table-customer_ratings" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/18.create-table-customer_ratings.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="create-bulk-indices" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/19.create-bulk-indices.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="insert-test-date" author="Max Orlov">
+        <sqlFile encoding="utf8" path="sql/20.insert-test-data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>
