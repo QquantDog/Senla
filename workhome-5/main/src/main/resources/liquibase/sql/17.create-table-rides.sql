@@ -1,0 +1,20 @@
+create table rides(
+	ride_id bigserial primary key,
+	shift_id bigint not null references shifts(shift_id),
+	customer_id bigint not null references customers(customer_id),
+	promocode_id bigint references promocodes(promocode_id),
+	promocode_enter_code varchar(100),
+	ride_tip numeric,
+	ride_distance_meters numeric not null, 
+	start_point_long longitude,
+	start_point_lat latitude,
+	end_point_long longitude,
+	end_point_lat latitude,
+	created_at timestamp not null default now(),
+	ride_driver_waiting timestamp,
+	ride_starttime timestamp,
+	ride_endtime timestamp,
+	status ride_status,
+	constraint ride_tip_non_negative check (ride_tip >= 0.0),
+	constraint ride_distance_meters_non_negative check (ride_distance_meters >= 0.0)
+);
