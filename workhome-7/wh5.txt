@@ -1,0 +1,66 @@
+1. узнать про n+1(джоином) - тогда cartesian, иначе FetchMode.SUBSELECT??
+2. list vs set - чо куда
+
+3. one_to_one не могут в lazy
+4. нужны ли конвертеры на enumу
+
+one_to_one - хреново работает - не могу поставить lazy с parent-side one-to-one(select * from users) - тянет 11 запросов(5 на 5)
+FetchMode.SubSelect не работает на one_to_one
+
+ОБЯЗАТЕЛЬНО ставить optional = false и fetch = FetchType.LAZY ДАЖЕ если idea подчеркивает
+
+join vs join fetch
+
+-------
+
+1. No EntityManager with actual transaction available for current thread - cannot reliably process 'persist' call - при отстутствии transactional
+2. куда вставлять dto и откуда их забирать (controller, service)
+3. как правильно делать put по id !!!!! - проблема с обновлением - ошибка в транзакции кидается потом и не всплывает
+4. DataIntegrityViolationException.class
+
+error response dto
+поменгять формат времени
+додумать валидацию dto'шек
+посмотреть куда и как логеры прокинуть
+и исключения
+
+POSTGIS!!!!!!
+добавить таблицу автопарк - рега??
+подумать о цене и дисконте - не как промокод - а за накат определенной дистанции - можно попробовать через шедулинг(раз в день смотрится дистанция суммарная)
+
+
+спросить при таком поиске лучше кажую отдельную сущность так делать - или все таки лучше общую мапу на все параметры
+
+set -> list поменятьп
+on cascade update on cascade delete
+
+
+//    If the method parameter is Map or MultiValueMap and a parameter name is not specified, then the map parameter is populated with all request parameter names and values.
+
+//    dto filter
+//    search(FilterDto)
+//    code
+//    starDate
+//    naming
+//    @validated - группы валидации сделать пока оверкилл ошибок
+//
+
+//    customer -> rides
+
+//    вернуть к плоским параметрам
+
+
+1. swagger
+2. кол-во функций в сервисах
+3. payment gateway
+4. нужно ли перекрывать
+5. отправка на почту
+6. переделывала ли на бут
+
+@GetMapping
+    public ResponseEntity<List<TaxiCompanyResponseDto>> getAllCompanies() throws JsonProcessingException {
+        List<TaxiCompany> companies = taxiCompanyService.findAll();
+        List<TaxiCompanyResponseDto> arr = new ArrayList<>();
+        companies.forEach(c -> arr.add(modelMapper.map(c, TaxiCompanyResponseDto.class)));
+        return new ResponseEntity<>(arr, HttpStatus.OK);
+    }

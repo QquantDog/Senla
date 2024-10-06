@@ -1,0 +1,71 @@
+
+//    @Transactional
+//    public void calculatePrice() {
+//        List<Tuple> ridesHalf = rideDao.findLowestAVGPerDistance();
+//        for(Tuple row: ridesHalf) {
+//            System.out.println(row.get(0, Ride.class));
+//            System.out.println(row.get(1, CityRate.class));
+//        }
+    }
+//    private double calculateRide(Ride r, CityRate c){
+//        BigDecimal sum;
+//        sum = BigDecimal.ZERO.add(r.getRideTip()).add(BigDecimal.ZERO);
+//    }
+
+//    @Override
+//    public void fullJoin() {
+//        List<Tuple> tuples = rideDao.fullJoin();
+//
+//        System.out.println(tuples.size());
+//        for(Tuple tuple: tuples) {
+//            Ride ride = tuple.get(0, Ride.class);
+//            Promocode pc = tuple.get(5, Promocode.class);
+//            Shift shift = tuple.get(1, Shift.class);
+//            Customer customer = tuple.get(2, Customer.class);
+//            Rate rate = tuple.get(3, Rate.class);
+//            CustomerRating rating = tuple.get(4, CustomerRating.class);
+//            System.out.println("\n--------------");
+//            System.out.println(ride);
+//            System.out.println(pc);
+//            System.out.println(shift);
+//            System.out.println(customer);
+//            System.out.println(rating);
+//            System.out.println(rate);
+//        }
+//    }
+//
+////    @Transactional
+//    public void testTransaction() {
+//        System.out.println(rideDao.findById(1L).get().getCurrentRate());
+//    }
+
+//    @Override
+//    public void getCriteriaAgg1JoinRide() {
+//
+//        for(Object[] objectArr: rideDao.getCriteriaAgg1JoinRide()){
+//            System.out.println("city_name: " + objectArr[0]);
+//            System.out.println("avg_distance: " + objectArr[1]);
+//            System.out.println("number_per_city: " + objectArr[2]);
+//        }
+//    }
+
+//    @Override
+////    @Transactional
+//    public void getGraph1(){
+//        rideDao.getGraph1().ifPresentOrElse((r) -> {
+//            System.out.println(r + "\nShift: " +  r.getShift());
+//        }, ()->System.out.println("no rides"));
+//    }
+//
+//    @Override
+//    public void getGraph2() {
+////        throw new RuntimeException("No realisation");
+//        rideDao.getGraph2().ifPresentOrElse((r) -> {
+//            System.out.println(r + "\nShift: " +  r.getShift() + "\nCab: " +  r.getShift().getCab());
+//        }, ()->System.out.println("no rides"));
+//    }
+//
+//    @Override
+//    public List<Ride> getAllRidesFull() {
+//        return rideDao.getFullRides();
+//    }
