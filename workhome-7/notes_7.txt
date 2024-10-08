@@ -1,0 +1,13 @@
+for many to many : exclude equals and hashcode and toString
+for inserting:
+ - fetch entity(with dependencies) (by id)
+ - fetch dependency to add (by id)
+ - add to set(list)
+ - save
+
+
+ @Transactional на тест методы - обязательно спросить
+
+
+!! как создать ресурсы в тестах
+!! откуда читает classpath

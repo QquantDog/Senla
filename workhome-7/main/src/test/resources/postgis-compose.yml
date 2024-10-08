@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  test-postgis:
+    image: postgis/postgis:16-master
+    container_name: test_postgis_db
+    environment:
+      POSTGRES_USER: default
+      POSTGRES_PASSWORD: default
+      POSTGRES_DB: taxi_db_integration_test
+    ports:
+      - "10001:5432"
+    volumes:
+      - test-postgis-data:/var/lib/postgresql/data
+
+volumes:
+  test-postgis-data:
