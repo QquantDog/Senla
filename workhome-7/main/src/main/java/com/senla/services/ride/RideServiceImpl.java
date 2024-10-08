@@ -62,6 +62,9 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
     @Autowired
     private PaymentDao paymentDao;
 
+    @Autowired
+    private PriceCalculation priceCalculation;
+
     @PostConstruct
     @Override
     public void init() {
@@ -103,16 +106,13 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         Rate rate = rateResp.get();
         rideToStart.setRate(rate);
 
-//        обсчет идет через бд - единственное место где можно поменять на обсчет на сервере
         BigDecimal expectedDistance = BigDecimal.valueOf(rideDao.getMinimalCartesianDistance(
                 rideCreateDto.getStartPoint(), rideCreateDto.getEndPoint()
         ));
-        rideToStart.setRideExpectedPrice(calculateExpectedPricePerDistance(expectedDistance, rate).setScale(1, RoundingMode.UP));
+        rideToStart.setRideExpectedPrice(priceCalculation.calculateExpectedPricePerDistance(expectedDistance, rate).setScale(1, RoundingMode.UP));
         rideToStart.setRideDistanceExpectedMeters(expectedDistance.setScale(0, RoundingMode.CEILING));
         rideToStart.setStatus(RideStatus.PENDING);
 
-//        find shifts and drivers - capable to
-//        и возможно с шедулингом
         List<Shift> matchedShifts = shiftDao.getMatchingShifts(rateId, rideToStart.getStartPoint(), 20000.0);
         matchedShifts.forEach(shift -> {
             Match match = Match.builder().ride(rideToStart).shift(shift).upperThreshold(LocalDateTime.now().plusHours(1)).build();
@@ -120,7 +120,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         });
 
 
-        return abstractDao.create(rideToStart);
+        return rideDao.create(rideToStart);
     }
 
 //    это делает driver - драйвер становитя onRide - шифт становится
@@ -173,7 +173,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         ride.setStatus(RideStatus.WAITING_CLIENT);
         ride.setRideDriverWaiting(LocalDateTime.now());
 
-        return abstractDao.update(ride);
+        return rideDao.update(ride);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         ride.setRideStartTime(startTime);
         ride.setStatus(RideStatus.IN_WAY);
 
-        return abstractDao.update(ride);
+        return rideDao.update(ride);
     }
 
     @Override
@@ -216,7 +216,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         }
         else {
             ride.setRideDistanceActualMeters(rideEndDto.getActualDistance().setScale(0, RoundingMode.CEILING));
-            ride.setRideActualPrice(calculateActualPricePerTrip(ride, rate).setScale(1, RoundingMode.UP));
+            ride.setRideActualPrice(priceCalculation.calculateActualPricePerTrip(ride, rate).setScale(1, RoundingMode.UP));
         }
 
         Driver driver = ride.getShift().getDriver();
@@ -224,10 +224,10 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         driverDao.update(driver);
 
         Payment payment = ride.getPayment();
-        payment.setOverallPrice(calculateFinishPrice(ride));
+        payment.setOverallPrice(priceCalculation.calculateFinishPrice(ride));
         paymentDao.update(payment);
 
-        return abstractDao.update(ride);
+        return rideDao.update(ride);
     }
 
     @Override
@@ -258,7 +258,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         }
         ride.setRideEndTime(cancelTime);
         ride.setStatus(RideStatus.CANCELLED);
-        return abstractDao.update(ride);
+        return rideDao.update(ride);
     }
 
     @Override
@@ -274,7 +274,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
         Promocode promocode = promocodeDao.findByCode(code);
         ride.setPromocode(promocode);
 
-        return abstractDao.update(ride);
+        return rideDao.update(ride);
     }
 
     @Override
@@ -285,34 +285,7 @@ public class RideServiceImpl extends AbstractLongIdGenericService<Ride> implemen
 
         Ride ride = rideDao.verifyRideByCustomer(rideId, customerId);
         ride.setRideTip(rideTipDto.getTipAmount());
-        return abstractDao.update(ride);
-    }
-
-
-    private BigDecimal calculateExpectedPricePerDistance(BigDecimal dist, Rate rate) {
-        return rate.getInitPrice().add(dist.multiply(rate.getRatePerKm().divide(BigDecimal.valueOf(1000), RoundingMode.UP))).setScale(1, RoundingMode.UP);
-    }
-
-    private BigDecimal calculateActualPricePerTrip(Ride ride, Rate rate) {
-        BigDecimal distancePrice = ride.getRideDistanceActualMeters().multiply(rate.getRatePerKm().divide(BigDecimal.valueOf(1000), RoundingMode.UP));
-        BigDecimal initPrice = rate.getInitPrice();
-        BigDecimal seconds = BigDecimal.valueOf(Duration.between(ride.getRideStartTime(), ride.getRideDriverWaiting()).toSeconds());
-        BigDecimal paidDelta = seconds.compareTo(BigDecimal.valueOf(rate.getFreeTimeInSeconds())) > 0 ?
-                    seconds
-                        .subtract( BigDecimal.valueOf(rate.getFreeTimeInSeconds()))
-                        .multiply(rate
-                                    .getPaidWaitingPerMinute()
-                                    .divide(BigDecimal.valueOf(60), RoundingMode.UP)
-                        ) :
-                BigDecimal.ZERO;
-
-        return initPrice.add(distancePrice).add(paidDelta).setScale(1, RoundingMode.UP);
-    }
-    private BigDecimal calculateFinishPrice(Ride ride) {
-        BigDecimal actualPrice = ride.getRideActualPrice();
-        BigDecimal rideTip = ride.getRideTip() == null ? BigDecimal.ZERO : ride.getRideTip();
-        BigDecimal discount = ride.getPromocode() == null ? BigDecimal.ZERO : ride.getPromocode().getDiscountValue();
-        return actualPrice.multiply(BigDecimal.ONE.subtract(discount)).add(rideTip).setScale(1, RoundingMode.UP);
+        return rideDao.update(ride);
     }
 
 }

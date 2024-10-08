@@ -1,6 +1,7 @@
 package com.senla.models.ride;
 
 import lombok.Getter;
+
 @Getter
 public enum RideStatus {
     PENDING("pending"),

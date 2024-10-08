@@ -1,10 +1,8 @@
 package com.senla.dao.shift;
 
-import com.senla.models.ride.RideStatus;
 import com.senla.models.shift.Shift;
 import com.senla.util.dao.AbstractLongDao;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;

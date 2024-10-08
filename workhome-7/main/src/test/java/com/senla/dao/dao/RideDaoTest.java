@@ -1,4 +1,4 @@
-package com.senla.dao;
+package com.senla.dao.dao;
 
 import com.senla.config.test.TestContainerConfig;
 import com.senla.dao.ride.RideDao;
